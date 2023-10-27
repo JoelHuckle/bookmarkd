@@ -1,17 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-    	<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<title>Blank Template</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<!-- external CSS link -->
-		<link rel="stylesheet" href="css/normalize.css">
-		<link rel="stylesheet" href="css/style.css">
-	</head>
-	<body>
+	<title>Bookmarkd</title>
 
-		<script type="text/javascript" src="js/main.js"></script>
-	</body>
+	<!-- external CSS link -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<header>
+		<h1>Bookmarkd</h1>
+	</header>
+
+	<section class="row">
+		<form>
+
+			<div class="item">
+				<label>ISBN</label>
+				<input type="text" required>
+			</div>
+
+			<div class="item">
+				<label>Page</label>
+				<input type="number" required>
+			</div>
+
+			<button class="add" type="submit">Add Book</button>
+		</form>
+	</section>
+
+	<main>
+		<section class="book">
+			<h2>Name</h2>
+			<img src="" alt="cover" class="thumbnail">
+			<span class="page-number"></span>
+		</section>
+	</main>
+
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+
 </html>
