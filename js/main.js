@@ -1,5 +1,3 @@
-//make book class - create elements and parent section element + properties
-
 class Book {
   constructor(title, pageNum, thumbnail = "") {
     this.title = title;
@@ -12,7 +10,6 @@ class Book {
   }
 
   createHTML() {
-    console.log("active");
     const section = document.createElement("section");
     section.classList.add("book");
 
@@ -26,12 +23,15 @@ class Book {
     section.appendChild(thumbnail);
 
     const pageNum = document.createElement("span");
-    pageNum.innerText = this.pageNum;
+    pageNum.innerText = this.pageNumber;
     section.appendChild(pageNum);
 
     document.querySelector("main").appendChild(section);
   }
 }
+
+//display books on load
+displayBooks();
 
 document.querySelector(".add").addEventListener("click", addBook);
 
@@ -72,7 +72,9 @@ function displayBooks() {
   //parses each obj
   books.forEach((n) => {
     n = JSON.parse(n);
-    currentBook = new Book(n.title, n.pageNumberm, n.thumbnail);
+    currentBook = new Book(n.title, n.pageNumber, n.thumbnail);
+    console.log(currentBook.title);
+    console.log(currentBook.pageNumber);
     currentBook.createHTML();
   });
 }
