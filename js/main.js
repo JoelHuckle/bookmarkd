@@ -1,52 +1,90 @@
 class Book {
-  constructor(title, pageNum, thumbnail = "") {
+  constructor(title, pageNum, ISBN) {
     this.title = title;
     this.pageNumber = pageNum;
-    this.thumbnail = thumbnail;
+    this.ISBN = ISBN;
+    this.thumbnail = `https://covers.openlibrary.org/b/isbn/${ISBN}-L.jpg`;
   }
 
   set setPage(num) {
     this.pageNumber = num;
   }
 
+  static ISBNList() {
+    let arr = [];
+    //fetches from storage, converts into array
+    const books = localStorage.getItem("books").split(" | ");
+    //parses each obj
+    books.forEach((n) => {
+      n = JSON.parse(n);
+      arr.push(n.ISBN);
+    });
+    return arr;
+  }
+
+  static displayBooks() {
+    //clears current display of books
+    resetHTML();
+    //fetches from storage, converts into array
+    const books = localStorage.getItem("books").split(" | ");
+    //parses each obj
+    books.forEach((n) => {
+      n = JSON.parse(n);
+      console.log(n);
+      const currentBook = new Book(n.title, n.pageNumber, n.thumbnail);
+      currentBook.createHTML();
+    });
+  }
+
   createHTML() {
     const section = document.createElement("section");
     section.classList.add("book");
+
+    const thumbnail = document.createElement("img");
+    thumbnail.classList.add("thumbnail");
+    thumbnail.src = this.ISBN;
+    section.appendChild(thumbnail);
 
     const title = document.createElement("h2");
     title.innerText = this.title;
     section.appendChild(title);
 
-    const thumbnail = document.createElement("img");
-    thumbnail.classList.add("thumbnail");
-    thumbnail.src = this.thumbnail;
-    section.appendChild(thumbnail);
-
     const pageNum = document.createElement("span");
-    pageNum.innerText = this.pageNumber;
+    pageNum.innerText = `Page: ${this.pageNumber}`;
     section.appendChild(pageNum);
 
     document.querySelector("main").appendChild(section);
   }
 }
 
+//resets books before re displaying
+function resetHTML() {
+  const books = document.querySelectorAll(".book");
+  books.forEach((n) => n.remove());
+}
+
 //display books on load
-displayBooks();
+if (localStorage.getItem("books")) {
+  Book.displayBooks();
+}
 
 document.querySelector(".add").addEventListener("click", addBook);
 
 function addBook() {
+  console.log("adding book...");
   const ISBN = document.querySelector(".ISBN").value;
   const page = document.querySelector(".page").value;
 
-  fetch(`https://openlibrary.org/isbn/${String(ISBN)}.json`)
+  fetch(`https://openlibrary.org/isbn/${ISBN}.json`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.title) {
-        //create book object
-        const book = new Book(data.title, page);
+        //create new Book instance
+        const book = new Book(data.title, page, String(ISBN));
         addToStorage(book);
+        Book.displayBooks();
+        console.log("book added");
+        // }
       } else {
         console.log("error finding title");
       }
@@ -59,6 +97,7 @@ function addToStorage(obj) {
   obj = JSON.stringify(obj);
   //dont include left divider if object is empty
   if (!localStorage.getItem("books")) {
+    console.log("first book added: creating local storage");
     localStorage.setItem("books", obj);
   } else {
     let bookArray = localStorage.getItem("books") + " | " + obj;
@@ -66,24 +105,14 @@ function addToStorage(obj) {
   }
 }
 
-function displayBooks() {
+function getTitles() {
+  let arr = [];
   //fetches from storage, converts into array
   const books = localStorage.getItem("books").split(" | ");
   //parses each obj
   books.forEach((n) => {
     n = JSON.parse(n);
-    currentBook = new Book(n.title, n.pageNumber, n.thumbnail);
-    console.log(currentBook.title);
-    console.log(currentBook.pageNumber);
-    currentBook.createHTML();
+    arr.push(n.title);
   });
+  return arr;
 }
-
-//creates HTML for each book object
-// function generateBooks(arr) {
-//   const arr = Array.from(arr);
-//   arr.forEach((n) => n);
-// }
-
-//i want to store each book object in an array in local storage but cant. I found online
-//a solution that i cound stringify the array and object and parse it once retrieved so i will try that
