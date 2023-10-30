@@ -6,10 +6,6 @@ class Book {
     this.thumbnail = `https://covers.openlibrary.org/b/isbn/${ISBN}-L.jpg`;
   }
 
-  set setPage(num) {
-    this.pageNumber = num;
-  }
-
   static ISBNList() {
     let arr = [];
     //fetches from storage, converts into array
@@ -30,7 +26,6 @@ class Book {
     //parses each obj
     books.forEach((n) => {
       n = JSON.parse(n);
-      console.log(n);
       const currentBook = new Book(n.title, n.pageNumber, n.thumbnail);
       currentBook.createHTML();
     });
@@ -52,6 +47,26 @@ class Book {
     const pageNum = document.createElement("span");
     pageNum.innerText = `Page: ${this.pageNumber}`;
     section.appendChild(pageNum);
+
+    const pageChange = document.createElement("input");
+    pageChange.placeholder = "Update Page";
+    pageChange.classList.add("pageChange");
+    section.appendChild(pageChange);
+
+    // change page
+    pageChange.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        //prevents default action
+        event.preventDefault();
+
+        //sets local storage
+
+        //sets visual
+        const newPage = event.target.value;
+        this.pageNumber = newPage;
+        pageNum.innerText = `Page: ${this.pageNumber}`;
+      }
+    });
 
     document.querySelector("main").appendChild(section);
   }
@@ -116,3 +131,14 @@ function getTitles() {
   });
   return arr;
 }
+
+function updatePage() {
+  //fetches from storage, converts into array
+  const books = localStorage.getItem("books").split(" | ");
+  books.forEach((n) => {
+    n = JSON.parse(n);
+    console.log(n);
+  });
+}
+
+updatePage();
