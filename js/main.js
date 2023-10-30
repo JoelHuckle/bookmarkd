@@ -3,7 +3,7 @@ class Book {
     this.title = title;
     this.pageNumber = pageNum;
     this.ISBN = ISBN;
-    this.thumbnail = `https://covers.openlibrary.org/b/ISBN/${ISBN}-M.jpg`;
+    this.thumbnail = `https://covers.openlibrary.org/b/ISBN/${ISBN}-L.jpg`;
   }
 
   static ISBNList() {
