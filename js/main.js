@@ -3,7 +3,7 @@ class Book {
     this.title = title;
     this.pageNumber = pageNum;
     this.ISBN = ISBN;
-    this.thumbnail = `https://covers.openlibrary.org/b/isbn/${ISBN}-L.jpg`;
+    this.thumbnail = `https://covers.openlibrary.org/b/ISBN/${ISBN}-M.jpg`;
   }
 
   static ISBNList() {
@@ -24,10 +24,19 @@ class Book {
     //fetches from storage, converts into array
     const books = localStorage.getItem("books").split(" | ");
     //parses each obj
+    books.forEach((n, i) => {
+      n = JSON.parse(n);
+      const currentBook = new Book(n.title, n.pageNumber, n.ISBN);
+      currentBook.createHTML();
+    });
+  }
+
+  static getIndex() {
+    let arr = [];
+    const books = localStorage.getItem("books").split(" | ");
     books.forEach((n) => {
       n = JSON.parse(n);
-      const currentBook = new Book(n.title, n.pageNumber, n.thumbnail);
-      currentBook.createHTML();
+      arr.push(n);
     });
   }
 
@@ -37,7 +46,7 @@ class Book {
 
     const thumbnail = document.createElement("img");
     thumbnail.classList.add("thumbnail");
-    thumbnail.src = this.ISBN;
+    thumbnail.src = this.thumbnail;
     section.appendChild(thumbnail);
 
     const title = document.createElement("h2");
@@ -131,14 +140,3 @@ function getTitles() {
   });
   return arr;
 }
-
-function updatePage() {
-  //fetches from storage, converts into array
-  const books = localStorage.getItem("books").split(" | ");
-  books.forEach((n) => {
-    n = JSON.parse(n);
-    console.log(n);
-  });
-}
-
-updatePage();

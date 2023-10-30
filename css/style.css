@@ -31,20 +31,37 @@ span{
 }
 
 .thumbnail{
-     width: 20%;
+     width: 50%;
 }
 
 .pageChange{
      width: fit-content;
-     
+
 }
 
 /******************************************
 /* LAYOUT
 /*******************************************/
-.book{
+main{
      display: flex;
+     flex-flow: wrap;
+
+}
+
+.book{
+     width: 33.333%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
      flex-direction: column;
+     padding: 10px 30px;
+     margin-bottom: 20px;
+}
+
+@media screen and (max-width: 800px){
+     .book{
+          width: 100%;
+     }
 }
 
 /******************************************
