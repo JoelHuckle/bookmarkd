@@ -23,12 +23,72 @@
 
 body {
      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+     padding: 50px;
+}
+
+h1{
+     font-size: 4rem;
+     font-weight: bold;
+}
+
+h2{
+     font-size: 1.5rem;
+     font-weight: bold;
+     margin: 20px 0 10px 0;
 }
 
 span{
      font-weight: 200;
+     font-size: 1.2rem;
+     margin-bottom: 10px;
+     margin-top: 0px;
+}
+
+input{
+     outline: none;
+     border: none;
+     border-bottom: 1px solid #ccc;
+     color: #ccc;
+}
+
+header input{
+     border-bottom: 2px solid #ccc;
+     font-size: 2rem;
+     font-weight: 200;
+}
+
+main input{
      font-size: 1.5rem;
 }
+
+label{
+     font-weight: 200;
+     font-size: 2rem;
+     padding-right: 10px;
+}
+
+button{
+     background: transparent;
+     border: 1px solid black;
+     border-radius: 50px;
+     transition: background-color .2s linear, color .2s linear;
+     font-size: 1.4rem;
+     font-weight: 200;
+     cursor: pointer;
+     padding: 5px 15px;
+     display: inline-block
+}
+
+button:hover{
+     background: #2e2e2e;
+     color: white;
+}
+
+.--red{
+     color: rgb(255, 86, 86);
+     border-bottom: 2px solid rgb(255, 86, 86);
+}
+
 
 .thumbnail{
      width: 50%;
@@ -42,10 +102,30 @@ span{
 /******************************************
 /* LAYOUT
 /*******************************************/
+header{
+     margin-bottom: 50px;
+}
+
 main{
      display: flex;
      flex-flow: wrap;
 
+}
+
+.row{
+     display: flex;
+     margin: 20px 0 27px 0;
+}
+
+@media screen and (max-width: 800px){
+     .row {
+          flex-direction: column;
+          gap: 5vh;
+     }
+}
+
+.item{
+     margin-right: 50px;
 }
 
 .book{

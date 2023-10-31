@@ -24,7 +24,7 @@ class Book {
     //fetches from storage, converts into array
     const books = localStorage.getItem("books").split(" | ");
     //parses each obj
-    books.forEach((n, i) => {
+    books.forEach((n) => {
       n = JSON.parse(n);
       const currentBook = new Book(n.title, n.pageNumber, n.ISBN);
       currentBook.createHTML();
@@ -58,17 +58,31 @@ class Book {
     section.appendChild(pageNum);
 
     const pageChange = document.createElement("input");
+    pageChange.type = "number";
     pageChange.placeholder = "Update Page";
     pageChange.classList.add("pageChange");
     section.appendChild(pageChange);
 
-    // change page
+    // change page number
     pageChange.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         //prevents default action
         event.preventDefault();
 
         //sets local storage
+        const books = localStorage
+          .getItem("books")
+          .split(" | ")
+          .map((n) => JSON.parse(n));
+
+        books.forEach((n) => {
+          if (n.title === this.title) {
+            n.pageNumber = this.pageNumber;
+          }
+        });
+
+        //adds updated object array to local storage
+        changeInStorage(books);
 
         //sets visual
         const newPage = event.target.value;
@@ -113,7 +127,33 @@ function addBook() {
         console.log("error finding title");
       }
     })
-    .catch((err) => `error: ${err}`);
+    .catch((err) => {
+      //displays error message
+      document.querySelector(".ISBN").classList.add("--red");
+      document.querySelector(".page").classList.add("--red");
+
+      console.log("ERROR");
+
+      //clears error message after 5 seconds
+      setTimeout(function () {
+        document.querySelector(".ISBN").classList.remove("--red");
+        document.querySelector(".page").classList.remove("--red");
+      }, 1000);
+    });
+}
+
+//replaces information of existing obj in local storage
+function changeInStorage(arr) {
+  let string = "";
+
+  //stringifies array
+  arr.forEach((n, i) => {
+    i === arr.length - 1
+      ? //removes right divider if last item
+        (string += JSON.stringify(n))
+      : (string += JSON.stringify(n) + " | ");
+  });
+  localStorage.setItem("books", string);
 }
 
 function addToStorage(obj) {
