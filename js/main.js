@@ -95,18 +95,23 @@ class Book {
   }
 }
 
-//resets books before re displaying
-function resetHTML() {
-  const books = document.querySelectorAll(".book");
-  books.forEach((n) => n.remove());
-}
+document.querySelector(".reset").addEventListener("click", () => {
+  localStorage.clear();
+  resetHTML();
+});
+
+document.querySelector(".add").addEventListener("click", addBook);
 
 //display books on load
 if (localStorage.getItem("books")) {
   Book.displayBooks();
 }
 
-document.querySelector(".add").addEventListener("click", addBook);
+//resets books before re displaying
+function resetHTML() {
+  const books = document.querySelectorAll(".book");
+  books.forEach((n) => n.remove());
+}
 
 function addBook() {
   console.log("adding book...");
@@ -117,6 +122,7 @@ function addBook() {
     .then((res) => res.json())
     .then((data) => {
       if (data.title) {
+        // console.log(Book.ISBNList());
         //create new Book instance
         const book = new Book(data.title, page, String(ISBN));
         addToStorage(book);

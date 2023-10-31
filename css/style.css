@@ -55,10 +55,12 @@ header input{
      border-bottom: 2px solid #ccc;
      font-size: 2rem;
      font-weight: 200;
+     transition: color .2s linear, border .2s linear;
 }
 
 main input{
-     font-size: 1.5rem;
+     margin-top: 10px;
+     font-size: 1rem;
 }
 
 label{
@@ -69,7 +71,7 @@ label{
 
 button{
      background: transparent;
-     border: 1px solid black;
+     border: 1px solid #2e2e2e;
      border-radius: 50px;
      transition: background-color .2s linear, color .2s linear;
      font-size: 1.4rem;
@@ -79,8 +81,21 @@ button{
      display: inline-block
 }
 
+.reset{
+     color: rgb(255, 86, 86);
+     border: 1px solid rgb(255, 86, 86);
+     margin-left: 10px;
+}
+
+
+
 button:hover{
      background: #2e2e2e;
+     color: white;
+}
+
+.reset:hover{
+     background-color: rgb(255, 86, 86);
      color: white;
 }
 
@@ -109,7 +124,6 @@ header{
 main{
      display: flex;
      flex-flow: wrap;
-
 }
 
 .row{
@@ -118,6 +132,10 @@ main{
 }
 
 @media screen and (max-width: 800px){
+     main{
+          justify-content: center;
+     }
+
      .row {
           flex-direction: column;
           gap: 5vh;
@@ -129,7 +147,7 @@ main{
 }
 
 .book{
-     width: 33.333%;
+     flex: 0 1 33.3333%;
      display: flex;
      justify-content: center;
      align-items: center;
