@@ -12,7 +12,7 @@ class Book {
     //clears current display of books
     resetHTML();
     //fetches from storage, converts into array
-    const books = localStorage.getItem("books").split(" | ");
+    const books = Book.objLst();
     //parses each obj
     books.forEach((n) => {
       n = JSON.parse(n);
@@ -23,11 +23,15 @@ class Book {
 
   static getIndex() {
     let arr = [];
-    const books = localStorage.getItem("books").split(" | ");
+    const books = Book.objLst();
     books.forEach((n) => {
       n = JSON.parse(n);
       arr.push(n);
     });
+  }
+
+  static objLst() {
+    return localStorage.getItem("books").split(" | ");
   }
 
   createHTML() {
@@ -104,7 +108,7 @@ function ISBNCheck(ISBN) {
 
   //checks ISBN against array
   let arr = [];
-  const books = localStorage.getItem("books").split(" | ");
+  const books = Book.objLst();
   books.forEach((n) => {
     n = JSON.parse(n);
     arr.push(n.ISBN);
@@ -192,7 +196,7 @@ function addToStorage(obj) {
 function getTitles() {
   let arr = [];
   //fetches from storage, converts into array
-  const books = localStorage.getItem("books").split(" | ");
+  const books = Book.objLst();
   //parses each obj
   books.forEach((n) => {
     n = JSON.parse(n);
