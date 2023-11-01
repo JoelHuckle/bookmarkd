@@ -6,17 +6,7 @@ class Book {
     this.thumbnail = `https://covers.openlibrary.org/b/ISBN/${ISBN}-L.jpg`;
   }
 
-  static ISBNList() {
-    let arr = [];
-    //fetches from storage, converts into array
-    const books = localStorage.getItem("books").split(" | ");
-    //parses each obj
-    books.forEach((n) => {
-      n = JSON.parse(n);
-      arr.push(n.ISBN);
-    });
-    return arr;
-  }
+  static ISBNList() {}
 
   static displayBooks() {
     //clears current display of books
@@ -95,13 +85,6 @@ class Book {
   }
 }
 
-document.querySelector(".reset").addEventListener("click", () => {
-  localStorage.clear();
-  resetHTML();
-});
-
-document.querySelector(".add").addEventListener("click", addBook);
-
 //display books on load
 if (localStorage.getItem("books")) {
   Book.displayBooks();
@@ -113,6 +96,29 @@ function resetHTML() {
   books.forEach((n) => n.remove());
 }
 
+function ISBNCheck(ISBN) {
+  //returns false if first book
+  if (!localStorage.getItem("books")) {
+    return false;
+  }
+
+  //checks ISBN against array
+  let arr = [];
+  const books = localStorage.getItem("books").split(" | ");
+  books.forEach((n) => {
+    n = JSON.parse(n);
+    arr.push(n.ISBN);
+  });
+  return arr.includes(ISBN) ? true : false;
+}
+
+document.querySelector(".reset").addEventListener("click", () => {
+  localStorage.clear();
+  resetHTML();
+});
+
+document.querySelector(".add").addEventListener("click", addBook);
+
 function addBook() {
   console.log("adding book...");
   const ISBN = document.querySelector(".ISBN").value;
@@ -122,13 +128,21 @@ function addBook() {
     .then((res) => res.json())
     .then((data) => {
       if (data.title) {
-        // console.log(Book.ISBNList());
-        //create new Book instance
-        const book = new Book(data.title, page, String(ISBN));
-        addToStorage(book);
-        Book.displayBooks();
-        console.log("book added");
-        // }
+        if (ISBNCheck(ISBN)) {
+          document
+            .querySelector(".error-text")
+            .classList.add("error-text--active");
+          setTimeout(() => {
+            document
+              .querySelector(".error-text")
+              .classList.remove("error-text--active");
+          }, 1000);
+        } else {
+          const book = new Book(data.title, page, String(ISBN));
+          addToStorage(book);
+          Book.displayBooks();
+          console.log("book added");
+        }
       } else {
         console.log("error finding title");
       }
