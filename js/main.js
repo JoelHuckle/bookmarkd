@@ -29,6 +29,9 @@ class Book {
   }
 
   static objLst() {
+    if (!localStorage.getItem("books")) {
+      return [];
+    }
     return localStorage.getItem("books").split(" | ");
   }
 
@@ -83,6 +86,40 @@ class Book {
       }
     });
 
+    const removeBook = document.createElement("button");
+    removeBook.classList.add("reset");
+    removeBook.innerText = "Remove";
+
+    removeBook.addEventListener("click", () => {
+      const books = Book.objLst().map((n) => JSON.parse(n));
+      //removes key if only one book exists
+      if (books.length === 1) {
+        localStorage.removeItem("books");
+      } else {
+        //finds title match, removes from array
+        books.forEach((n) => {
+          if (n.title === this.title) {
+            books.splice(books.indexOf(n), 1);
+          }
+        });
+
+        //updates local storage
+        changeInStorage(books);
+      }
+
+      //updates visual
+      resetHTML();
+      Book.displayBooks();
+    });
+
+    //adds page change and remove book to flex row
+    const container = document.createElement("div");
+    container.classList.add("row");
+    container.appendChild(pageChange);
+    container.appendChild(removeBook);
+
+    //adds child div to main
+    section.appendChild(container);
     document.querySelector("main").appendChild(section);
   }
 }
