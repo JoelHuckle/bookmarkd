@@ -6,8 +6,6 @@ class Book {
     this.thumbnail = `https://covers.openlibrary.org/b/ISBN/${ISBN}-L.jpg`;
   }
 
-  static ISBNList() {}
-
   static displayBooks() {
     //clears current display of books
     resetHTML();
@@ -100,20 +98,20 @@ function resetHTML() {
   books.forEach((n) => n.remove());
 }
 
-function ISBNCheck(ISBN) {
+function existingBook(title) {
   //returns false if first book
   if (!localStorage.getItem("books")) {
     return false;
   }
 
-  //checks ISBN against array
   let arr = [];
   const books = Book.objLst();
   books.forEach((n) => {
     n = JSON.parse(n);
-    arr.push(n.ISBN);
+    arr.push(n.title);
   });
-  return arr.includes(ISBN) ? true : false;
+
+  return arr.includes(title) ? true : false;
 }
 
 document.querySelector(".reset").addEventListener("click", () => {
@@ -132,7 +130,8 @@ function addBook() {
     .then((res) => res.json())
     .then((data) => {
       if (data.title) {
-        if (ISBNCheck(ISBN)) {
+        //error if book already added
+        if (existingBook(data.title)) {
           document
             .querySelector(".error-text")
             .classList.add("error-text--active");
@@ -142,6 +141,7 @@ function addBook() {
               .classList.remove("error-text--active");
           }, 1000);
         } else {
+          console.log(data);
           const book = new Book(data.title, page, String(ISBN));
           addToStorage(book);
           Book.displayBooks();
