@@ -159,7 +159,6 @@ document.querySelector(".reset").addEventListener("click", () => {
 document.querySelector(".add").addEventListener("click", addBook);
 
 function addBook() {
-  console.log("adding book...");
   const ISBN = document.querySelector(".ISBN").value;
   const page = document.querySelector(".page").value;
 
@@ -182,18 +181,13 @@ function addBook() {
           const book = new Book(data.title, page, String(ISBN));
           addToStorage(book);
           Book.displayBooks();
-          console.log("book added");
         }
-      } else {
-        console.log("error finding title");
       }
     })
     .catch((err) => {
       //displays error message
       document.querySelector(".ISBN").classList.add("--red");
       document.querySelector(".page").classList.add("--red");
-
-      console.log("ERROR");
 
       //clears error message after 5 seconds
       setTimeout(function () {
