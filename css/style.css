@@ -133,6 +133,29 @@ button:hover{
 
 }
 
+.change{
+     color: rgb(5, 194, 5);
+     border: 1px solid rgb(5, 194, 5);
+}
+
+.change:hover{
+     color: white;
+     background: rgb(5, 194, 5);
+}
+
+.remove{
+     color: rgb(255, 86, 86);
+     border: 1px solid rgb(255, 86, 86);
+     margin-left: 10px;
+     border-radius: 500px;
+
+}
+
+.remove:hover{
+     color: white;
+     background: rgb(255, 86, 86);
+}
+
 /******************************************
 /* LAYOUT
 /*******************************************/

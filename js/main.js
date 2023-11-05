@@ -54,41 +54,40 @@ class Book {
 
     const pageChange = document.createElement("input");
     pageChange.type = "number";
-    pageChange.placeholder = "Update Page";
+    pageChange.placeholder = "Page";
     pageChange.classList.add("pageChange");
     section.appendChild(pageChange);
 
+    const pageBtn = document.createElement("button");
+    pageBtn.classList.add("change");
+    pageBtn.innerText = "+";
+
     // change page number
-    pageChange.addEventListener("keypress", (event) => {
-      if (event.key === "Enter") {
-        //prevents default action
-        event.preventDefault();
-
-        //sets local storage
-        const books = localStorage
-          .getItem("books")
-          .split(" | ")
-          .map((n) => JSON.parse(n));
-
-        books.forEach((n) => {
-          if (n.title === this.title) {
-            n.pageNumber = this.pageNumber;
+    pageBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (pageChange.value) {
+        const newPage = pageChange.value;
+        // Set local storage
+        const books = Book.objLst().map((n) => JSON.parse(n));
+        books.forEach((book) => {
+          if (book.title === this.title) {
+            book.pageNumber = newPage;
           }
         });
 
-        //adds updated object array to local storage
+        // Add the updated object array to local storage
         changeInStorage(books);
 
-        //sets visual
-        const newPage = event.target.value;
+        // Set the visual
         this.pageNumber = newPage;
+        // Assuming 'pageNum' is an element, update its text
         pageNum.innerText = `Page: ${this.pageNumber}`;
       }
     });
 
     const removeBook = document.createElement("button");
-    removeBook.classList.add("reset");
-    removeBook.innerText = "Remove";
+    removeBook.classList.add("remove");
+    removeBook.innerText = "_";
 
     removeBook.addEventListener("click", () => {
       const books = Book.objLst().map((n) => JSON.parse(n));
@@ -116,6 +115,7 @@ class Book {
     const container = document.createElement("div");
     container.classList.add("row");
     container.appendChild(pageChange);
+    container.appendChild(pageBtn);
     container.appendChild(removeBook);
 
     //adds child div to main
