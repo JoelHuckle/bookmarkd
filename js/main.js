@@ -158,43 +158,43 @@ document.querySelector(".reset").addEventListener("click", () => {
 
 document.querySelector(".add").addEventListener("click", addBook);
 
-function addBook() {
+async function addBook() {
   const ISBN = document.querySelector(".ISBN").value;
   const page = document.querySelector(".page").value;
 
-  fetch(`https://openlibrary.org/isbn/${ISBN}.json`)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.title) {
-        //error if book already added
-        if (existingBook(data.title)) {
+  try {
+    const res = await fetch(`https://openlibrary.org/isbn/${ISBN}.json`);
+
+    const data = await res.json();
+
+    if (data.title) {
+      //error if book already added
+      if (existingBook(data.title)) {
+        document
+          .querySelector(".error-text")
+          .classList.add("error-text--active");
+        setTimeout(() => {
           document
             .querySelector(".error-text")
-            .classList.add("error-text--active");
-          setTimeout(() => {
-            document
-              .querySelector(".error-text")
-              .classList.remove("error-text--active");
-          }, 1000);
-        } else {
-          console.log(data);
-          const book = new Book(data.title, page, String(ISBN));
-          addToStorage(book);
-          Book.displayBooks();
-        }
+            .classList.remove("error-text--active");
+        }, 1000);
+      } else {
+        console.log(data);
+        const book = new Book(data.title, page, String(ISBN));
+        addToStorage(book);
+        Book.displayBooks();
       }
-    })
-    .catch((err) => {
-      //displays error message
-      document.querySelector(".ISBN").classList.add("--red");
-      document.querySelector(".page").classList.add("--red");
-
-      //clears error message after 5 seconds
-      setTimeout(function () {
-        document.querySelector(".ISBN").classList.remove("--red");
-        document.querySelector(".page").classList.remove("--red");
-      }, 1000);
-    });
+    }
+  } catch {
+    //displays error message
+    document.querySelector(".ISBN").classList.add("--red");
+    document.querySelector(".page").classList.add("--red");
+    //clears error message after 5 seconds
+    setTimeout(function () {
+      document.querySelector(".ISBN").classList.remove("--red");
+      document.querySelector(".page").classList.remove("--red");
+    }, 1000);
+  }
 }
 
 //replaces information of existing obj in local storage
