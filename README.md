@@ -12,6 +12,8 @@ To save progress across multiple sessions, I stringified each book object and sa
 
 I used flexbox to make the website responsive on a range of viewports, allowing the book list to wrap and fit the users screen size.
 
+## Lessons Learned:
+This project taught me a lot about using local storage as well as converting between objects and strings in order to read string only storage.
 
 
 
